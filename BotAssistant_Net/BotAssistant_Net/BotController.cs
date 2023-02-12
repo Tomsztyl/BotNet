@@ -55,24 +55,24 @@ namespace BotAssistant_Net
                 fileCreated.Close();
                 string json = JsonConvert.SerializeObject( m_BotPropertiesData, Formatting.Indented );
                 File.WriteAllText( @formatPath, json );
-                PrintLog( "File not exist!" );
+                PrintLog( "File not exist!", ETypeLog.Warning );
                 string log = string.Format( "Complete the file [{0}] that was created in the same path and run again!", NAME_FILE_DATA );
-                PrintLog( log );
-                PrintLog( "Shut down app" );
+                PrintLog( log, ETypeLog.Warning );
+                PrintLog( "Shut down app", ETypeLog.Warning );
                 return false;
             }
             else
             {
                 string loadText = File.ReadAllText( @formatPath );
                 m_BotPropertiesData = JsonConvert.DeserializeObject<BotProperties>( loadText );
-                PrintLog( "File loaded!" );
+                PrintLog( "File loaded!", ETypeLog.Succes );
                 return true;
             }
         }
 
         private Task _client_Log( LogMessage arg )
         {
-            Console.WriteLine( arg );
+            PrintLog( arg.Message );
             return Task.CompletedTask;
         }
 
@@ -89,12 +89,12 @@ namespace BotAssistant_Net
             if( message.Author.IsBot ) return;
 
             int argPos = 0;
-            if( message.HasStringPrefix( m_BotPropertiesData.TokenBot, ref argPos ) )
+            if( message.HasStringPrefix( m_BotPropertiesData.PrefixBot, ref argPos ) )
             {
                 var result = await m_Commands.ExecuteAsync( context, argPos, m_Services );
                 if( !result.IsSuccess )
                 {
-                    Console.WriteLine( result.ErrorReason );
+                    PrintLog( result.ErrorReason );
                 }
 
                 if( result.Error.Equals( CommandError.UnmetPrecondition ) )
@@ -105,12 +105,40 @@ namespace BotAssistant_Net
         }
 
         #region DEBUG
-        private const string LOG_PREFIX = "BOT[LOG] ~ ";
-
-        public void PrintLog( string logText )
+        private const string LOG_PREFIX = "BOT[LOG]~ ";
+        public enum ETypeLog
         {
+            Log,
+            Succes,
+            Warning,
+            Error,
+        }
+
+        public void PrintLog( string logText, ETypeLog eTypeLog = ETypeLog.Log )
+        {
+            SetColorConsole( eTypeLog );
             string text = string.Format( "{0}{1}", LOG_PREFIX, logText );
             Console.WriteLine( text );
+            Console.ResetColor();
+        }
+
+        private void SetColorConsole( ETypeLog eTypeLog )
+        {
+            switch( eTypeLog )
+            {
+                case ETypeLog.Log:
+                    Console.ResetColor();
+                    break;
+                case ETypeLog.Warning:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case ETypeLog.Error:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case ETypeLog.Succes:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+            }
         }
 
         #endregion
@@ -118,7 +146,8 @@ namespace BotAssistant_Net
 
     internal class BotProperties
     {
-        public string TokenBot { get; set; } = "gfdg54t546gfgfdgdfghthg45+65dwejelk4";
+        public string TokenBot { get; set; } = "NzIxMDMxNTMyNjI5NzIxMTMw.GPv3p6.xilVv9CvwIFBQcsviEnAG2hMkKVAl1_ol00bQs";
+        public string PrefixBot { get; set; } = string.Empty;
         public MysqlProperties MysqlProperties { get; set; } = new MysqlProperties();
     }
 
