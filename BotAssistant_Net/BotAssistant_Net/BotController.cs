@@ -6,33 +6,33 @@ using System.Reflection;
 
 namespace BotAssistant_Net
 {
-    internal class Program
+    internal class BotController
     {
-        static void Main( string[] args ) => new Program().RunBotAsync().GetAwaiter().GetResult();
+        static void Main( string[] args ) => new BotController().RunBotAsync().GetAwaiter().GetResult();
 
-        private DiscordSocketClient _client;
-        private CommandService _commands;
-        private IServiceProvider _services;
+        private DiscordSocketClient m_Client;
+        private CommandService m_Commands;
+        private IServiceProvider m_Services;
 
         public async Task RunBotAsync()
         {
-            _client = new DiscordSocketClient();
-            _commands = new CommandService();
+            m_Client = new DiscordSocketClient();
+            m_Commands = new CommandService();
 
-            _services = new ServiceCollection()
-                .AddSingleton( _client )
-                .AddSingleton( _commands )
+            m_Services = new ServiceCollection()
+                .AddSingleton( m_Client )
+                .AddSingleton( m_Commands )
                 .BuildServiceProvider();
 
             string token = "NzIxMDMxNTMyNjI5NzIxMTMw.GPv3p6.xilVv9CvwIFBQcsviEnAG2hMkKVAl1_ol00bQs";
 
-            _client.Log += _client_Log;
+            m_Client.Log += _client_Log;
 
             await RegisterCommandsAsync();
 
-            await _client.LoginAsync( TokenType.Bot, token );
+            await m_Client.LoginAsync( TokenType.Bot, token );
 
-            await _client.StartAsync();
+            await m_Client.StartAsync();
 
             await Task.Delay( -1 );
 
@@ -46,20 +46,20 @@ namespace BotAssistant_Net
 
         public async Task RegisterCommandsAsync()
         {
-            _client.MessageReceived += HandleCommandAsync;
-            await _commands.AddModulesAsync( Assembly.GetEntryAssembly(), _services );
+            m_Client.MessageReceived += HandleCommandAsync;
+            await m_Commands.AddModulesAsync( Assembly.GetEntryAssembly(), m_Services );
         }
 
         private async Task HandleCommandAsync( SocketMessage arg )
         {
             var message = arg as SocketUserMessage;
-            var context = new SocketCommandContext( _client, message );
+            var context = new SocketCommandContext( m_Client, message );
             if( message.Author.IsBot ) return;
 
             int argPos = 0;
-            if( message.HasStringPrefix( "!", ref argPos ) )
+            if( message.HasStringPrefix( "", ref argPos ) )
             {
-                var result = await _commands.ExecuteAsync( context, argPos, _services );
+                var result = await m_Commands.ExecuteAsync( context, argPos, m_Services );
                 if( !result.IsSuccess ) Console.WriteLine( result.ErrorReason );
                 if( result.Error.Equals( CommandError.UnmetPrecondition ) ) await message.Channel.SendMessageAsync( result.ErrorReason );
             }

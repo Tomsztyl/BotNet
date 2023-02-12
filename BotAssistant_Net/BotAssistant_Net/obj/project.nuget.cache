@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+3fA9Uz33mFEMpmOLmNioNkssh7kJFAQgi8N79EK3WK09Fj0E9lXnaprxb+mcVTEuizSF8+8TgGPWbiJK9UR8g==",
+  "dgSpecHash": "jmdlc/+WIWLzrH6qc9I2VJ1NW1UFW2B5CSM67/+xvWRzNKNcRwqh517URe2D/uomnnqUyLCgO4lmKNBCzYecDg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\User\\source\\repos\\BotAssistant_Net\\BotAssistant_Net\\BotAssistant_Net.csproj",
+  "projectFilePath": "D:\\ProjectsApp\\BotNet\\BotAssistant_Net\\BotAssistant_Net\\BotAssistant_Net.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\discord.net\\2.1.1\\discord.net.2.1.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\discord.net.commands\\2.1.1\\discord.net.commands.2.1.1.nupkg.sha512",

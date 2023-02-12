@@ -4922,11 +4922,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\source\\repos\\BotAssistant_Net\\BotAssistant_Net\\BotAssistant_Net.csproj",
+      "projectUniqueName": "D:\\ProjectsApp\\BotNet\\BotAssistant_Net\\BotAssistant_Net\\BotAssistant_Net.csproj",
       "projectName": "BotAssistant_Net",
-      "projectPath": "C:\\Users\\User\\source\\repos\\BotAssistant_Net\\BotAssistant_Net\\BotAssistant_Net.csproj",
+      "projectPath": "D:\\ProjectsApp\\BotNet\\BotAssistant_Net\\BotAssistant_Net\\BotAssistant_Net.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\source\\repos\\BotAssistant_Net\\BotAssistant_Net\\obj\\",
+      "outputPath": "D:\\ProjectsApp\\BotNet\\BotAssistant_Net\\BotAssistant_Net\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
