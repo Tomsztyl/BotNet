@@ -16,7 +16,7 @@ namespace BotAssistant_Net
         private CommandService m_Commands;
         private IServiceProvider m_Services;
 
-        public async Task RunBotAsync()
+        private async Task RunBotAsync()
         {
             m_Client = new DiscordSocketClient();
             m_Commands = new CommandService();
@@ -46,7 +46,7 @@ namespace BotAssistant_Net
             return Task.CompletedTask;
         }
 
-        public async Task RegisterCommandsAsync()
+        private async Task RegisterCommandsAsync()
         {
             m_Client.MessageReceived += HandleCommandAsync;
             await m_Commands.AddModulesAsync( Assembly.GetEntryAssembly(), m_Services );
