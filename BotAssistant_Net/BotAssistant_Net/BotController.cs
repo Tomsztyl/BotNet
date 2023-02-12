@@ -8,6 +8,8 @@ namespace BotAssistant_Net
 {
     internal class BotController
     {
+        public const string PREFIX_COMMAND = "";
+
         static void Main( string[] args ) => new BotController().RunBotAsync().GetAwaiter().GetResult();
 
         private DiscordSocketClient m_Client;
@@ -57,11 +59,18 @@ namespace BotAssistant_Net
             if( message.Author.IsBot ) return;
 
             int argPos = 0;
-            if( message.HasStringPrefix( "", ref argPos ) )
+            if( message.HasStringPrefix( PREFIX_COMMAND, ref argPos ) )
             {
                 var result = await m_Commands.ExecuteAsync( context, argPos, m_Services );
-                if( !result.IsSuccess ) Console.WriteLine( result.ErrorReason );
-                if( result.Error.Equals( CommandError.UnmetPrecondition ) ) await message.Channel.SendMessageAsync( result.ErrorReason );
+                if( !result.IsSuccess )
+                {
+                    Console.WriteLine( result.ErrorReason );
+                }
+
+                if( result.Error.Equals( CommandError.UnmetPrecondition ) )
+                {
+                    await message.Channel.SendMessageAsync( result.ErrorReason );
+                }
             }
         }
     }
