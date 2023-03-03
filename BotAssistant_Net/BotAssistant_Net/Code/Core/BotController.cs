@@ -55,7 +55,7 @@ namespace BotAssistant_Net.Code.Core
         private bool TryLoadFileData()
         {
             string path = Directory.GetCurrentDirectory();
-            string formatPath = string.Format( "{0}\\{1}", path, NAME_FILE_DATA );
+            string formatPath = string.Format( "{0}/{1}", path, NAME_FILE_DATA );
             if( !File.Exists( formatPath ) )
             {
                 FileStream fileCreated = File.Create( @formatPath );
@@ -64,7 +64,9 @@ namespace BotAssistant_Net.Code.Core
                 File.WriteAllText( @formatPath, json );
                 Debuger.PrintLog( "File not exist!", ETypeLog.Warning );
                 string log = string.Format( "Complete the file [{0}] that was created in the same path and run again!", NAME_FILE_DATA );
+                string pathCreated = string.Format( "[{0}] PATH: {1}", NAME_FILE_DATA , @formatPath );
                 Debuger.PrintLog( log, ETypeLog.Warning );
+                Debuger.PrintLog( pathCreated, ETypeLog.Warning );
                 Debuger.PrintLog( "Shut down app", ETypeLog.Warning );
                 return false;
             }
@@ -72,6 +74,8 @@ namespace BotAssistant_Net.Code.Core
             {
                 string loadText = File.ReadAllText( @formatPath );
                 BotPropertiesData = JsonConvert.DeserializeObject<BotProperties>( loadText );
+                string pathCreated = string.Format( "[{0}] PATH: {1}", NAME_FILE_DATA, @formatPath );
+                Debuger.PrintLog( pathCreated, ETypeLog.Succes );
                 Debuger.PrintLog( "File loaded!", ETypeLog.Succes );
                 return true;
             }
