@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Newtonsoft.Json;
 using BotAssistant_Net.Code.Core.MySQL;
+using System.Runtime.InteropServices;
+using MySqlX.XDevAPI;
 
 namespace BotAssistant_Net.Code.Core
 {
@@ -54,8 +56,18 @@ namespace BotAssistant_Net.Code.Core
 
         private bool TryLoadFileData()
         {
+            string prefix = string.Empty;
+            if( RuntimeInformation.IsOSPlatform( OSPlatform.Linux ) )
+            {
+                prefix = "/";
+            }
+            else
+            {
+                prefix = "\\";
+            }
+
             string path = Directory.GetCurrentDirectory();
-            string formatPath = string.Format( "{0}/{1}", path, NAME_FILE_DATA );
+            string formatPath = string.Format( "{0}{1}{2}", path, prefix, NAME_FILE_DATA );
             if( !File.Exists( formatPath ) )
             {
                 FileStream fileCreated = File.Create( @formatPath );
@@ -64,7 +76,7 @@ namespace BotAssistant_Net.Code.Core
                 File.WriteAllText( @formatPath, json );
                 Debuger.PrintLog( "File not exist!", ETypeLog.Warning );
                 string log = string.Format( "Complete the file [{0}] that was created in the same path and run again!", NAME_FILE_DATA );
-                string pathCreated = string.Format( "[{0}] PATH: {1}", NAME_FILE_DATA , @formatPath );
+                string pathCreated = string.Format( "[{0}] PATH: {1}", NAME_FILE_DATA, @formatPath );
                 Debuger.PrintLog( log, ETypeLog.Warning );
                 Debuger.PrintLog( pathCreated, ETypeLog.Warning );
                 Debuger.PrintLog( "Shut down app", ETypeLog.Warning );
@@ -95,11 +107,13 @@ namespace BotAssistant_Net.Code.Core
 
         private async Task HandleCommandAsync( SocketMessage arg )
         {
+            MarkMessageInConsole( arg );
+
             var message = arg as SocketUserMessage;
             var context = new SocketCommandContext( m_Client, message );
             if( message.Author.IsBot ) return;
 
-            m_DataManager.SetTeacherUser( string.Format("@{0}#{1}", arg.Author.Username, arg.Author.Discriminator) );
+            m_DataManager.SetTeacherUser( string.Format( "@{0}#{1}", arg.Author.Username, arg.Author.Discriminator ) );
             int argPos = 0;
             if( message.HasStringPrefix( BotPropertiesData.PrefixBot, ref argPos ) )
             {
@@ -120,9 +134,18 @@ namespace BotAssistant_Net.Code.Core
             }
         }
 
+        private void MarkMessageInConsole( SocketMessage arg )
+        {
+            var message = arg as SocketUserMessage;
+            var context = new SocketCommandContext( m_Client, message );
+            string formatMessageFeedback = string.Empty;
+            formatMessageFeedback = string.Format( "[@{0}] writed [{1}]", arg.Author.Username, context.Message );
+            Debuger.PrintLog( formatMessageFeedback, ETypeLog.Log );
+        }
+
         private async Task HandleAIBrain( SocketMessage arg )
         {
-           
+
         }
 
     }

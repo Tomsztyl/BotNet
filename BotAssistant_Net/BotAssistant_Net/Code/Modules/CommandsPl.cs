@@ -77,5 +77,7 @@ namespace TutorialBot.Modules
 
             await Context.Channel.SendMessageAsync( "Godzina: " + localDate + " :flag_pl: " );
         }
+
+
     }
 }

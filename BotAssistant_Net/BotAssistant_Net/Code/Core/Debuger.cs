@@ -10,12 +10,12 @@
 
     public static class Debuger
     {
-        private const string LOG_PREFIX = "BOT[LOG]~ ";
+        private const string LOG_PREFIX = "BOT[LOG] ~ ";
 
         public static void PrintLog( string logText, ETypeLog eTypeLog = ETypeLog.Log )
         {
             SetColorConsole( eTypeLog );
-            string text = string.Format( "{0}{1}", LOG_PREFIX, logText );
+            string text = string.Format( "{0}[{1}] {2}", LOG_PREFIX, DateTime.Now, logText );
             Console.WriteLine( text );
             Console.ResetColor();
         }

@@ -40,7 +40,7 @@ namespace BotAssistant_Net.Code.Core.MySQL
 
                 if( mySqlDataReader.HasRows )
                 {
-                    Debuger.PrintLog( "Print your result" );
+                    Debuger.PrintLog( "Print your result");
                 }
                 else
                 {
@@ -67,7 +67,7 @@ namespace BotAssistant_Net.Code.Core.MySQL
 
                 if( mySqlDataReader.HasRows )
                 {
-                    Debuger.PrintLog( "Print your result" );
+                    Debuger.PrintLog( "[DB] Print your result" );
                 }
                 else
                 {
