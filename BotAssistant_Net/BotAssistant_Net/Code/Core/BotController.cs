@@ -113,11 +113,13 @@ namespace BotAssistant_Net.Code.Core
             var context = new SocketCommandContext( m_Client, message );
             if( message.Author.IsBot ) return;
 
-            m_DataManager.SetTeacherUser( string.Format( "@{0}#{1}", arg.Author.Username, arg.Author.Discriminator ) );
+            string username = string.Format( "@{0}#{1}", arg.Author.Username, arg.Author.Discriminator );
+            m_DataManager.SetTeacherUser( username );
             int argPos = 0;
             if( message.HasStringPrefix( BotPropertiesData.PrefixBot, ref argPos ) )
             {
                 var result = await m_Commands.ExecuteAsync( context, argPos, m_Services );
+                m_DataManager.InsertQuestion( username, context.Message.Content );
                 if( !result.IsSuccess )
                 {
                     Debuger.PrintLog( result.ErrorReason );
